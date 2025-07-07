@@ -1,5 +1,6 @@
 import {
   createUserService,
+  deleteUserService,
   getAllUsers,
   getUserById,
   updateUserNameByIdService,
@@ -30,11 +31,29 @@ export const updateUserNameById = async (req, res) => {
     const { name, id } = req.body;
 
     const updatedUser = await updateUserNameByIdService(name, id);
+
+    if (updatedUser.status === "not-found")
+      return res.status(404).json({ message: "User with this id not found" });
+
+    if (updatedUser.status === "same-name")
+      return res
+        .status(400)
+        .json({ message: "new name is same as the old name " });
+
     res.json({ message: "user updated successfully", updatedUser });
   } catch (error) {
     res.status(500).json({ error: "Failed to update the user" });
   }
 };
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.body;
+  const deletedUser = await deleteUserService(id);
+  if (deletedUser.status === "not-found")
+    return res.status(404).json({ message: "user with this id not found" });
+};
+
+res.status(200).json({ message: "user deleted successfully", deleteUser });
 
 export const createUser = async (req, res) => {
   try {
