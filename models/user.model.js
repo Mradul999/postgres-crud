@@ -38,7 +38,7 @@ export const deleteUserService = async (id) => {
     [id]
   );
 
-  return result.rows[0];
+  return { status: "deleted", user: result.rows[0] };
 };
 
 export const createUserService = async (name, email) => {

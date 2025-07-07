@@ -47,13 +47,18 @@ export const updateUserNameById = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  const { id } = req.body;
-  const deletedUser = await deleteUserService(id);
-  if (deletedUser.status === "not-found")
-    return res.status(404).json({ message: "user with this id not found" });
+  try {
+    const { id } = req.body;
+    const result = await deleteUserService(id);
+    if (result.status === "not-found")
+      return res.status(404).json({ message: "user with this id not found" });
+    res
+      .status(200)
+      .json({ message: "user deleted successfully", deletedUser: result.user });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete the user" });
+  }
 };
-
-res.status(200).json({ message: "user deleted successfully", deleteUser });
 
 export const createUser = async (req, res) => {
   try {
