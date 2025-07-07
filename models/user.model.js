@@ -11,10 +11,10 @@ export const getUserById = async (id) => {
 };
 
 export const updateUserNameByIdService = async (name, id) => {
-  const result = await pool.query("update users set name=$1 where id=$2", [
-    name,
-    id,
-  ]);
+  const result = await pool.query(
+    "update users set name=$1 where id=$2 returning *",
+    [name, id]
+  );
 
   return result.rows[0];
 };
