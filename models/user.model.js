@@ -19,7 +19,7 @@ export const updateUserNameByIdService = async (name, id) => {
 
   if (existingUser.rowCount == 0) return { status: "not-found" };
 
-  if (existingUser.name === name) return { status: "same-name" };
+  if (existingUser.rows[0].name === name) return { status: "same-name" };
 
   const result = await pool.query(
     "update users set name=$1 where id=$2 returning *",
