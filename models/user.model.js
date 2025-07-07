@@ -15,6 +15,8 @@ export const updateUserNameByIdService = async (name, id) => {
     id,
   ]);
 
+  console.log("existing user is ", existingUser);
+
   if (existingUser.rowCount == 0) return { status: "not-found" };
 
   if (existingUser.name === name) return { status: "same-name" };
@@ -24,7 +26,7 @@ export const updateUserNameByIdService = async (name, id) => {
     [name, id]
   );
 
-  return result.rows[0];
+  return { status: "updated", user: result.rows[0] };
 };
 
 export const deleteUserService = async (id) => {
